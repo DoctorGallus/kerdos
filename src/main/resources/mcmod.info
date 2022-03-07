@@ -1,0 +1,9 @@
+[{
+	"modid": "kerdos",
+	"name": "Kerdos",
+	"version": "${version}",
+	"mcversion": "${mcversion}",
+	"authorList": ["DoctorGallus"],
+	"description": "",
+	"logoFile": ""
+}]
