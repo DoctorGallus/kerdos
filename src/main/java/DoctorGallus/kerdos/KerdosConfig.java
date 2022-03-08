@@ -16,23 +16,24 @@ public class KerdosConfig
 
 	public static class GeneralConfig
 	{
-		@Comment({"Initial funds players start with"})
+		@Comment({"Initial funds players start with."})
 		@Config.RangeInt(min = 0)
 		public int startingFunds = 0;
 
-		@Comment({"Minimum percentage of funds to be released on payout"})
+		@Comment({"Minimum percentage of funds to be released on payout."})
 		@Config.RangeDouble(min = 0D, max = 1D)
 		public double payoutRateMin = 0.3D;
 
-		@Comment({"Maximum percentage of funds to be released on payout"})
+		@Comment({"Maximum percentage of funds to be released on payout."})
 		@Config.RangeDouble(min = 0D, max = 1D)
 		public double payoutRateMax = 0.5D;
 
 		@Comment({
-			"Currency items used for payout",
+			"Currency items used for payout.",
 			"Syntax: modid:itemname@value",
 			"Syntax: modid:itemname:meta@value",
-			"where \"value\" is the monetary value of that item"
+			"where \"value\" is the monetary value of that item.",
+			"When omitting \"meta\" it defaults to \"0\"."
 		})
 		public String[] currencyItems = {
 			"jjcoin:copper_coin@1",
@@ -41,7 +42,7 @@ public class KerdosConfig
 			"jjcoin:diamond_coin@1000"
 		};
 
-		@Comment({"Loot tables to use for payout"})
+		@Comment({"Loot tables to use for payout."})
 		public String[] payoutLootTables = {
 			"minecraft:chests/simple_dungeon",
 			"minecraft:entities/skeleton",
@@ -49,10 +50,12 @@ public class KerdosConfig
 		};
 
 		@Comment({
-			"Blocks which increase your fund when harvested",
+			"Blocks which increase your fund when harvested.",
 			"Syntax: modid:itemname@value",
 			"Syntax: modid:itemname:meta@value",
-			"where \"value\" is the value by which a players fund should be increased"
+			"where \"value\" is the value by which a players fund should be increased.",
+			"When omitting \"meta\" it defaults to \"0\".",
+			"A \"*\" can be used to match all possible \"meta\" values."
 		})
 		public String[] fundSourceBlocks = {
 			"minecraft:diamond_ore@10",
@@ -60,8 +63,8 @@ public class KerdosConfig
 		};
 
 		@Comment({
-			"If enabled, Fortune enchantments also apply to fund increases when harvesting a block",
-			"Uses the formula `base_value * (1 / (fortune_lvl + 2) + (fortune_lvl + 1) / 2)` which corresponds to the average drops increase for ores in vanilla minecraft"
+			"If enabled, Fortune enchantments also apply to fund increases when harvesting a block.",
+			"Uses the formula `base_value * (1 / (fortune_lvl + 2) + (fortune_lvl + 1) / 2)` which corresponds to the average drops increase for ores in vanilla minecraft."
 		})
 		public boolean applyFortuneEnchantment = true;
 	}
