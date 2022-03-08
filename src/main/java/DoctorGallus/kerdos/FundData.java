@@ -25,6 +25,7 @@ public class FundData extends WorldSavedData
 	public FundData(String str)
 	{
 		super(str);
+		player_funds = new HashMap();
 	}
 
 	public static FundData get(World world)
