@@ -40,6 +40,7 @@ public class Kerdos
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
+		KerdosConfig.Handler.reloadConfig();
 	}
 
 	@EventHandler

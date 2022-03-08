@@ -1,9 +1,12 @@
 package doctorgallus.kerdos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.MapStorage;
@@ -111,6 +114,36 @@ public class FundData extends WorldSavedData
 		}
 
 		return false;
+	}
+
+	public List<ItemStack> payoutFunds(String username)
+	{
+		ArrayList<ItemStack> payout = new ArrayList();
+
+		double current_funds = getFunds(username);
+		int payout_amount = (int) Math.round(Math.floor(current_funds * (KerdosConfig.general.payoutRateMin + Math.random() * (KerdosConfig.general.payoutRateMax - KerdosConfig.general.payoutRateMin))));
+		boolean successful = changeFunds(username, 0 - payout_amount);
+		if(!successful)
+		{
+			return payout;
+		}
+
+
+		Map.Entry<Integer, ItemStack> current_entry = KerdosConfig.Handler.currencyItems.lastEntry();
+		while (current_entry != null)
+		{
+			if (payout_amount >= current_entry.getKey())
+			{
+				ItemStack payout_stack = current_entry.getValue().copy();
+				payout_stack.setCount(payout_amount / current_entry.getKey());
+				payout.add(payout_stack);
+				payout_amount %= current_entry.getKey();
+			}
+
+			current_entry = KerdosConfig.Handler.currencyItems.lowerEntry(current_entry.getKey());
+		}
+
+		return payout;
 	}
 }
 

@@ -1,5 +1,11 @@
 package doctorgallus.kerdos;
 
+
+import java.util.Map;
+import java.util.TreeMap;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.ConfigManager;
@@ -69,14 +75,67 @@ public class KerdosConfig
 		public boolean applyFortuneEnchantment = true;
 	}
 
+
 	public static class Handler
 	{
+		public static TreeMap<Integer, ItemStack> currencyItems = new TreeMap();
+
 		@SubscribeEvent
 		public void onConfigChangedEvent(OnConfigChangedEvent event)
 		{
 			if (event.getModID().equals(Kerdos.MODID))
 			{
 				ConfigManager.sync(Kerdos.MODID, Config.Type.INSTANCE);
+
+				reloadConfig();
+			}
+		}
+
+		public static void reloadConfig()
+		{
+			KerdosConfig.Handler.currencyItems.clear();
+			for (String entry : KerdosConfig.general.currencyItems)
+			{
+				String[] data = entry.split("@");
+				String[] name = data[0].split(":");
+
+				if (name.length >= 2)
+				{
+					Item item = Item.getByNameOrId(name[0] + ":" + name[1]);
+
+					if (item != null)
+					{
+						ItemStack stack = item.getDefaultInstance();
+
+						if (name.length == 3)
+						{
+							int meta;
+
+							try
+							{
+								meta = Integer.parseInt(name[3]);
+							}
+							catch (NumberFormatException e)
+							{
+								continue;
+							}
+
+							stack.setItemDamage(meta);
+						}
+
+						int value;
+						try
+						{
+							value = Integer.parseInt(data[1]);
+						}
+						catch (NumberFormatException e)
+						{
+							continue;
+						}
+
+						KerdosConfig.Handler.currencyItems.put(value, stack);
+					}
+				}
 			}
 		}
 	}

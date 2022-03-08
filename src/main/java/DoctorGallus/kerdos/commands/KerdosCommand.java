@@ -6,6 +6,7 @@ import net.minecraftforge.server.command.CommandTreeBase;
 import doctorgallus.kerdos.commands.KerdosCommandFundsGet;
 import doctorgallus.kerdos.commands.KerdosCommandFundsSet;
 import doctorgallus.kerdos.commands.KerdosCommandFundsChange;
+import doctorgallus.kerdos.commands.KerdosCommandPayout;
 
 
 public class KerdosCommand extends CommandTreeBase
@@ -19,6 +20,7 @@ public class KerdosCommand extends CommandTreeBase
 		this.addSubcommand(new KerdosCommandFundsGet());
 		this.addSubcommand(new KerdosCommandFundsSet());
 		this.addSubcommand(new KerdosCommandFundsChange());
+		this.addSubcommand(new KerdosCommandPayout());
 	}
 
 	@Override
