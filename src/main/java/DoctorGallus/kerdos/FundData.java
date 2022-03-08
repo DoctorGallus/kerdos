@@ -14,18 +14,16 @@ public class FundData extends WorldSavedData
 {
 	public static final String DATA_NAME = "Kerdos";
 
-	private Map<String, Integer> player_funds;
+	private Map<String, Integer> player_funds = new HashMap();
 
 	public FundData()
 	{
 		super(DATA_NAME);
-		player_funds = new HashMap();
 	}
 
 	public FundData(String str)
 	{
 		super(str);
-		player_funds = new HashMap();
 	}
 
 	public static FundData get(World world)
@@ -47,6 +45,9 @@ public class FundData extends WorldSavedData
 	{
 		player_funds.clear();
 
+		for (String key : nbt.getKeySet())
+		{
+		}
 		NBTTagCompound funds = nbt.getCompoundTag("funds");
 		for (String username : funds.getKeySet())
 		{
@@ -62,7 +63,7 @@ public class FundData extends WorldSavedData
 			funds.setInteger(username, amount);
 		});
 
-		nbt.setTag("kerdos_funds", funds);
+		nbt.setTag("funds", funds);
 		return nbt;
 	}
 
@@ -103,12 +104,7 @@ public class FundData extends WorldSavedData
 	{
 		int current_funds = getFunds(username);
 
-		if (current_funds < 0 && funds >= 0)
-		{
-			setFunds(username, funds);
-			return true;
-		}
-		else if ((current_funds + funds) >= 0)
+		if (current_funds >= 0 && (current_funds + funds) >= 0)
 		{
 			setFunds(username, current_funds + funds);
 			return true;
