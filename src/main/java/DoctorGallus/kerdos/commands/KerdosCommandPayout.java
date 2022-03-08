@@ -26,6 +26,22 @@ public class KerdosCommandPayout extends CommandBase
 	}
 
 	@Override
+	public boolean checkPermission(final MinecraftServer server, final ICommandSender sender)
+	{
+		String username = sender.getName();
+		boolean found = false;
+		for (String entry : server.getPlayerList().getOppedPlayerNames())
+		{
+			if (username.equals(entry))
+			{
+				found = true;
+			}
+		}
+
+		return (found || server.getPlayerList().getPlayerByUsername(username).isCreative());
+	}
+
+	@Override
 	public String getName()
 	{
 		return COMMAND_NAME;
