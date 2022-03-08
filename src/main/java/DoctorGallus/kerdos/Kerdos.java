@@ -14,7 +14,7 @@ import doctorgallus.kerdos.KerdosConfig;
 import doctorgallus.kerdos.commands.KerdosCommand;
 
 
-@Mod(modid = Kerdos.MODID, version = Kerdos.VERSION, name = Kerdos.NAME, useMetadata = true)
+@Mod(modid = Kerdos.MODID, version = Kerdos.VERSION, name = Kerdos.NAME, acceptableRemoteVersions = "*", useMetadata = true)
 public class Kerdos
 {
 	public static final String NAME = "Kerdos";
