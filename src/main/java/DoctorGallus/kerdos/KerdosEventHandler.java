@@ -66,6 +66,11 @@ public class KerdosEventHandler
 						try
 						{
 							value = Integer.parseInt(entry_data[1]);
+							if (!event.isSilkTouching() && KerdosConfig.general.applyFortuneEnchantment)
+							{
+								int fortune_lvl = event.getFortuneLevel();
+								value = (int) Math.round(Math.floor(value * ((1D / (fortune_lvl + 2D)) + ((fortune_lvl + 1D) / 2D))));
+							}
 						}
 						catch (NumberFormatException e)
 						{
