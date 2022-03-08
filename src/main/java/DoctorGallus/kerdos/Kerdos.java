@@ -3,13 +3,15 @@ package doctorgallus.kerdos;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import doctorgallus.kerdos.KerdosConfig;
+import doctorgallus.kerdos.commands.KerdosCommand;
 
 
 @Mod(modid = Kerdos.MODID, version = Kerdos.VERSION, name = Kerdos.NAME, useMetadata = true)
@@ -39,4 +41,11 @@ public class Kerdos
 	public void postInit(FMLPostInitializationEvent event)
 	{
 	}
+
+	@EventHandler
+	public void serverStarting(FMLServerStartingEvent event)
+	{
+		event.registerServerCommand(new KerdosCommand());
+	}
 }
+

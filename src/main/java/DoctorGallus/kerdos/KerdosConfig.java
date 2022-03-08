@@ -1,6 +1,5 @@
 package doctorgallus.kerdos;
 
-
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.Config.Comment;
 import net.minecraftforge.common.config.ConfigManager;
@@ -17,6 +16,10 @@ public class KerdosConfig
 
 	public static class GeneralConfig
 	{
+		@Comment({"Initial funds players start with"})
+		@Config.RangeInt(min = 0)
+		public int startingFunds = 0;
+
 		@Comment({"Minimum percentage of funds to be released on payout"})
 		@Config.RangeDouble(min = 0D, max = 1D)
 		public double payoutRateMin = 0.3D;
