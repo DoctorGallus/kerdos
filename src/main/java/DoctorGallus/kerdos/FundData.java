@@ -158,6 +158,12 @@ public class FundData extends WorldSavedData
 		return payout;
 	}
 
+	/**
+	 * Get a payout for a player
+	 *
+	 * @param username The players username
+	 * @return The payout
+	 */
 	public List<ItemStack> getPayout(String username)
 	{
 		if (preparedPayout == null)
@@ -171,6 +177,13 @@ public class FundData extends WorldSavedData
 		return payout;
 	}
 
+	/**
+	 * Get a single itemstack of the payout for a player
+	 *
+	 * @param username The players username
+	 * @param item The item for which a stack should be returned
+	 * @return a ItemStack, or `null` if the item isn't part of the payout
+	 */
 	public ItemStack getItemsFromPayout(String username, Item item)
 	{
 		if (preparedPayout == null)
