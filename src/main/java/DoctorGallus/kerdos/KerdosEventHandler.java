@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 import doctorgallus.kerdos.Kerdos;
 import doctorgallus.kerdos.KerdosConfig;
+import doctorgallus.kerdos.KerdosEventHandler;
 import doctorgallus.kerdos.loot.KerdosLootFunction;
 import doctorgallus.kerdos.FundData;
 
