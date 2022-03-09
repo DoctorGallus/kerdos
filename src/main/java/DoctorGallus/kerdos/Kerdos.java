@@ -3,6 +3,7 @@ package doctorgallus.kerdos;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import net.minecraft.world.storage.loot.functions.LootFunctionManager;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -12,6 +13,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import doctorgallus.kerdos.KerdosConfig;
 import doctorgallus.kerdos.commands.KerdosCommand;
+import doctorgallus.kerdos.loot.KerdosLootFunction;
 
 
 @Mod(modid = Kerdos.MODID, version = Kerdos.VERSION, name = Kerdos.NAME, acceptableRemoteVersions = "*", useMetadata = true)
@@ -28,6 +30,7 @@ public class Kerdos
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		LootFunctionManager.registerFunction(new KerdosLootFunction.Serializer());
 	}
 
 

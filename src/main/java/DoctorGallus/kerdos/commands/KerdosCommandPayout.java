@@ -86,7 +86,7 @@ public class KerdosCommandPayout extends CommandBase
 		}
 
 		EntityPlayerMP player = server.getPlayerList().getPlayerByUsername(args[0]);
-		List<ItemStack> payout = fund_data.payoutFunds(args[0]);
+		List<ItemStack> payout = fund_data.getPayout(args[0]);
 		for (ItemStack stack : payout)
 		{
 			ItemHandlerHelper.giveItemToPlayer(player, stack);

@@ -1,11 +1,16 @@
 package doctorgallus.kerdos;
 
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -16,8 +21,10 @@ import net.minecraft.world.storage.WorldSavedData;
 public class FundData extends WorldSavedData
 {
 	public static final String DATA_NAME = "Kerdos";
+	public static Logger logger = LogManager.getLogger(Kerdos.MODID);
 
-	private Map<String, Integer> player_funds = new HashMap();
+	private Map<String, Integer> playerFunds = new HashMap();
+	private List<ItemStack> preparedPayout;
 
 	public FundData()
 	{
@@ -46,7 +53,7 @@ public class FundData extends WorldSavedData
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
-		player_funds.clear();
+		playerFunds.clear();
 
 		for (String key : nbt.getKeySet())
 		{
@@ -54,7 +61,7 @@ public class FundData extends WorldSavedData
 		NBTTagCompound funds = nbt.getCompoundTag("funds");
 		for (String username : funds.getKeySet())
 		{
-			player_funds.put(username, funds.getInteger(username));
+			playerFunds.put(username, funds.getInteger(username));
 		}
 	}
 
@@ -62,7 +69,7 @@ public class FundData extends WorldSavedData
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
 	{
 		NBTTagCompound funds = new NBTTagCompound();
-		player_funds.forEach((username, amount) -> {
+		playerFunds.forEach((username, amount) -> {
 			funds.setInteger(username, amount);
 		});
 
@@ -78,7 +85,7 @@ public class FundData extends WorldSavedData
 	 */
 	public int getFunds(String username)
 	{
-		return player_funds.getOrDefault(username, -1);
+		return playerFunds.getOrDefault(username, -1);
 	}
 
 	/**
@@ -89,7 +96,7 @@ public class FundData extends WorldSavedData
 	 */
 	public void setFunds(String username, int funds)
 	{
-		player_funds.put(username, funds);
+		playerFunds.put(username, funds);
 		markDirty();
 	}
 
@@ -116,12 +123,17 @@ public class FundData extends WorldSavedData
 		return false;
 	}
 
-	public List<ItemStack> payoutFunds(String username)
+	private List<ItemStack> generatePayout(String username)
 	{
 		ArrayList<ItemStack> payout = new ArrayList();
 
-		double current_funds = getFunds(username);
-		int payout_amount = (int) Math.round(Math.floor(current_funds * (KerdosConfig.general.payoutRateMin + Math.random() * (KerdosConfig.general.payoutRateMax - KerdosConfig.general.payoutRateMin))));
+		int current_funds = getFunds(username);
+		int payout_amount = (int) Math.round(Math.floor((double) current_funds * (KerdosConfig.general.payoutRateMin + Math.random() * (KerdosConfig.general.payoutRateMax - KerdosConfig.general.payoutRateMin))));
+		if (payout_amount > current_funds)
+		{
+			payout_amount = current_funds;
+		}
+
 		boolean successful = changeFunds(username, 0 - payout_amount);
 		if(!successful)
 		{
@@ -136,14 +148,52 @@ public class FundData extends WorldSavedData
 			{
 				ItemStack payout_stack = current_entry.getValue().copy();
 				payout_stack.setCount(payout_amount / current_entry.getKey());
-				payout.add(payout_stack);
 				payout_amount %= current_entry.getKey();
+				payout.add(payout_stack);
 			}
 
 			current_entry = KerdosConfig.Handler.currencyItems.lowerEntry(current_entry.getKey());
 		}
 
 		return payout;
+	}
+
+	public List<ItemStack> getPayout(String username)
+	{
+		if (preparedPayout == null)
+		{
+			preparedPayout = generatePayout(username);
+		}
+
+		List<ItemStack> payout = preparedPayout;
+		preparedPayout = null;
+
+		return payout;
+	}
+
+	public ItemStack getItemsFromPayout(String username, Item item)
+	{
+		if (preparedPayout == null)
+		{
+			preparedPayout = generatePayout(username);
+		}
+
+		ItemStack stack = null;
+		for (int i = 0, n = preparedPayout.size(); i < n; ++i)
+		{
+			if (Item.getIdFromItem(preparedPayout.get(i).getItem()) == Item.getIdFromItem(item))
+			{
+				stack = preparedPayout.remove(i);
+				break;
+			}
+		}
+
+		if (preparedPayout.size() < 1)
+		{
+			preparedPayout = null;
+		}
+
+		return stack;
 	}
 }
 
