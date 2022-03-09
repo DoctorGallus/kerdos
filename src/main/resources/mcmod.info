@@ -5,5 +5,7 @@
 	"mcversion": "${mcversion}",
 	"authorList": ["DoctorGallus"],
 	"description": "",
-	"logoFile": ""
+	"logoFile": "",
+	"dependencies": ["crafttweaker"]
 }]
+
