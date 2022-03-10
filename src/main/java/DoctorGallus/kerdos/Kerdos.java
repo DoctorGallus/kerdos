@@ -21,7 +21,7 @@ public class Kerdos
 {
 	public static final String NAME = "Kerdos";
 	public static final String MODID = "kerdos";
-	public static final String VERSION = "1.12-1.0.0.0-beta1";
+	public static final String VERSION = "1.12-1.0.0.0-rc1";
 
 	public static Logger logger = LogManager.getLogger(Kerdos.MODID);
 	// public static KerdosConfig config = KerdosConfig();
